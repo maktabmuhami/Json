@@ -84,35 +84,4 @@ if uploaded_files:
                 data=zip_buffer.getvalue(),
                 file_name="converted_json_files.zip",
                 mime="application/zip"
-            )uploaded_files = st.file_uploader("📂 اختر ملفات Word", type=["docx"], accept_multiple_files=True)
-
-if uploaded_files:
-    if st.button("🔄 تحويل وتحميل"):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            json_files = []
-
-            for file in uploaded_files:
-                law_name = os.path.splitext(file.name)[0]
-                articles = extract_articles_from_docx(file, law_name)
-                json_filename = f"{law_name}.json"
-                json_path = os.path.join(tmpdir, json_filename)
-
-                with open(json_path, "w", encoding="utf-8") as f:
-                    json.dump(articles, f, ensure_ascii=False, indent=2)
-                    json_files.append(json_path)
-
-            # إنشاء ملف zip
-            zip_buffer = io.BytesIO()
-            with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zipf:
-                for json_file in json_files:
-                    zipf.write(json_file, arcname=os.path.basename(json_file))
-
-            st.success("✅ تم التحويل بنجاح!")
-
-            # زر تحميل zip
-            st.download_button(
-                label="📥 تحميل جميع الملفات بصيغة ZIP",
-                data=zip_buffer.getvalue(),
-                file_name="converted_json_files.zip",
-                mime="application/zip"
-                              )
+                )
